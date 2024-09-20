@@ -28,19 +28,21 @@ public class Main {
 
         String pathToInterface = "";
         String pathToImplementation = "";
+        String pathToTest = "";
 
         ConfigurationService configuration = AiConnector.initateConfigurationService();
         AiService aiService1 = AiConnector.provideAi(configuration);
-        ChatMessage message1 = new UserMessage("You are Java expert.");
-        ChatMessage message2 = new UserMessage("I would like you to read the content of this interface, and to give me back the implementation.");
-        ChatMessage message3 = new UserMessage("Name the resulting class GdanskPetStore and give me a list of animals that can be found in this pet store");
-        ChatMessage message4 = new UserMessage("Do not explain the code.");
-        ChatMessage message5 = new UserMessage("Code below:");
-        ChatMessage message6 = new UserMessage(Files.readString(Path.of(pathToInterface)));
-        ChatMessage message7 = new UserMessage("I need that the output content you give me is JUST THE CODE");
-        ChatMessage message8 = new UserMessage("The beginning of your response should be package org.example; and the ending of your response should be a closing bracket");
+        ChatMessage message1 = new UserMessage("You are Java expert. I want you to help me with TDD development");
+        ChatMessage message2 = new UserMessage("I would like you to read the content of this interface and its unit tests, and to give me back the implementation.");
+        ChatMessage message3 = new UserMessage("Interface code below:");
+        ChatMessage message4 = new UserMessage(Files.readString(Path.of(pathToInterface)));
+        ChatMessage message5 = new UserMessage("I would like you to implement this interface so that it will pass ALL the unit tests available in this class");
+        ChatMessage message6 = new UserMessage("Test class code below:");
+        ChatMessage message7 = new UserMessage(Files.readString(Path.of(pathToTest)));
+        ChatMessage message8 = new UserMessage("I need that the output content you give me is JUST THE CODE");
+        ChatMessage message9 = new UserMessage("The beginning of your response should be package org.example; and the ending of your response should be a closing bracket");
 
-        List<ChatMessage> chatWithAi = new ArrayList<>(Arrays.asList(message1, message2, message3, message4, message5, message6, message7, message8));
+        List<ChatMessage> chatWithAi = new ArrayList<>(Arrays.asList(message1, message2, message3, message4, message5, message6, message7, message8, message9));
         Response<AiMessage> response = aiService1.generate(chatWithAi).orElseThrow(()-> new NoSuchElementException("No response from AI"));
 
         Files.writeString(Path.of(pathToImplementation),
